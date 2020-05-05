@@ -23,6 +23,7 @@
 </template>
 
 <script>
+import axios from 'axios';
 
  export default {
    data() {
@@ -35,8 +36,8 @@
      }
    },
    methods: {
-     createToDo() {
-  axios.post('/api/v1/to_dos', {to_do: {title: this.toDo.title, expired_at: this.toDo.expiredAt}})
+    createToDo() {
+    axios.post('/api/v1/to_dos', {to_do: {title: this.toDo.title, expired_at: this.toDo.expiredAt}})
     .then(res => {
       switch (res.status) {
         case 201:
@@ -48,6 +49,6 @@
         }
      });
     }
-  },
+  }
  }
 </script>
