@@ -2,10 +2,10 @@
   <div>
     <el-tabs v-model="activeName">
     <el-tab-pane label="ToDo" name="toDo">
-       <ToDoTable :to-dos="filter(toDos, false)"></ToDoTable>
+      <to-do-table v-bind:to-dos="filter(toDos, false)"></to-do-table>
     </el-tab-pane>
     <el-tab-pane label="終了したToDo" name="finishedToDo">
-      <ToDoTable :to-dos="filter(toDos, true)"></ToDoTable>
+      <to-do-table v-bind:to-dos="filter(toDos, true)"></to-do-table>
     </el-tab-pane>
    </el-tabs>
   </div>
@@ -22,6 +22,9 @@ export default {
       activeName: 'toDo'
     }
   },
+  components: {
+    ToDoTable
+  },
   created() {
     axios.get('/api/v1/to_dos')
        .then(res => {
@@ -37,9 +40,6 @@ export default {
         }
       });
     },
-  components: {
-    ToDoTable
-  },
   updateToDo(id, finished) {
   axios.patch('/api/v1/to_dos/' + id, {to_do: {finished: finished}})
     .then(res => {
