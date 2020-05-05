@@ -1,49 +1,25 @@
 <template>
-  <el-table
-    :data="toDos"
-    style="width: 100%">
-    <el-table-column
-      prop="finished">
-      <template v-slot="scope">
-        <el-checkbox
-          v-model="scope.row.finished"
-           @change="updateToDo(scope.row.id, scope.row.finished)"></el-checkbox>
-      </template>
-    </el-table-column>
-    <el-table-column
-      prop="date"
-      label="Date"
-      width="180">
-    </el-table-column>
-    <el-table-column
-      prop="title"
-      label="title"
-      width="180">
-    </el-table-column>
-    <el-table-column
-      prop="expired_at"
-      label="Address">
-    </el-table-column>
-    <el-table-column
-    width="120">
-    <template v-slot="scope">
-     <el-button
-      @click="destroyToDo(scope.row.id)"
-      type="danger"
-      icon="el-icon-delete"
-      circle></el-button>
-    </template>
-</el-table-column>
-  </el-table>
+  <div>
+    <el-tabs v-model="activeName">
+    <el-tab-pane label="ToDo" name="toDo">
+       <to-do-table v-bind:to-dos="filter(toDos, false)"></to-do-table>
+    </el-tab-pane>
+    <el-tab-pane label="終了したToDo" name="finishedToDo">
+      <to-do-table v-bind:to-dos="filter(toDos, true)"></to-do-table>
+    </el-tab-pane>
+  </el-tabs>
+  </div>
 </template>
 <script>
 import axios from 'axios';
-import {reject} from 'lodash';
+import {reject, filter} from 'lodash';
+import ToDoTable from '../to_dos/to-do-table'
 
 export default {
   data() {
     return {
-      toDos: []
+      toDos: [],
+      activeName: 'toDo'
     }
   },
   created() {
@@ -61,6 +37,9 @@ export default {
         }
       });
     },
+  components: {
+      ToDoTable
+    },
   updateToDo(id, finished) {
   axios.patch('/api/v1/to_dos/' + id, {to_do: {finished: finished}})
     .then(res => {
@@ -68,6 +47,9 @@ export default {
         console.log(res)
           }
       })
+    },
+    filter(toDos, finished) {
+      return filter(toDos, ['finished', finished])
     }
   }
 }
