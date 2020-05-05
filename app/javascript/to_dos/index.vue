@@ -13,7 +13,7 @@
 <script>
 import axios from 'axios';
 import {reject, filter} from 'lodash';
-import ToDoTable from '../to_dos/to-do-table'
+import ToDoTable from '../to_dos/to-do-table.vue'
 
 export default {
   data() {
@@ -38,7 +38,7 @@ export default {
       });
     },
   components: {
-    ToDoTable: ToDoTable
+    ToDoTable
   },
   updateToDo(id, finished) {
   axios.patch('/api/v1/to_dos/' + id, {to_do: {finished: finished}})
