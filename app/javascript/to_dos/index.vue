@@ -1,29 +1,46 @@
 <template>
-  <div>
-    <el-tabs v-model="activeName">
-    <el-tab-pane label="ToDo" name="toDo">
-      <to-do-table v-bind:to-dos="filter(toDos, false)"></to-do-table>
-    </el-tab-pane>
-    <el-tab-pane label="終了したToDo" name="finishedToDo">
-      <to-do-table v-bind:to-dos="filter(toDos, true)"></to-do-table>
-    </el-tab-pane>
-   </el-tabs>
+  <div id="app">
+    <el-row>
+      <el-button
+        icon="el-icon-plus"
+        @click="createToDoDialog = true"
+        circle></el-button>
+      <el-col :span="12" :offset="6">
+        <el-tabs v-model="activeName">
+          <el-tab-pane label="ToDo" name="toDo">
+            <to-do-table v-bind:to-dos="filter(toDos, false)"></to-do-table>
+          </el-tab-pane>
+          <el-tab-pane label="終了したToDo" name="finishedToDo">
+            <to-do-table v-bind:to-dos="filter(toDos, true)"></to-do-table>
+          </el-tab-pane>
+        </el-tabs>
+      </el-col>
+    </el-row>
+    <el-dialog
+    :visible.sync="createToDoDialog"
+    width="30%"
+    center>
+    <to-do-form></to-do-form>
+  </el-dialog>
   </div>
 </template>
 <script>
 import axios from 'axios';
 import {reject, filter} from 'lodash';
-import ToDoTable from '../to_dos/to-do-table.vue'
+import ToDoTable from '../to_dos/to-do-table.vue';
+import ToDoForm from '../to_dos/to-do-form';
 
 export default {
   data() {
     return {
       toDos: [],
-      activeName: 'toDo'
+      activeName: 'toDo',
+      createToDoDialog: false
     }
   },
   components: {
-    ToDoTable
+    ToDoTable,
+     ToDoForm
   },
   created() {
     axios.get('/api/v1/to_dos')
