@@ -1,6 +1,4 @@
 <template>
-  <div>
-  aa
     <el-table
       :data="toDos"
       style="width: 100%">
@@ -29,7 +27,6 @@
         </template>
       </el-table-column>
     </el-table>
-  </div>
 </template>
 
 <script>

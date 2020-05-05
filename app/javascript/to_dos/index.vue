@@ -2,18 +2,18 @@
   <div>
     <el-tabs v-model="activeName">
     <el-tab-pane label="ToDo" name="toDo">
-       <to-do-table v-bind:to-dos="filter(toDos, false)"></to-do-table>
+       <ToDoTable :to-dos="filter(toDos, false)"></ToDoTable>
     </el-tab-pane>
     <el-tab-pane label="終了したToDo" name="finishedToDo">
-      <to-do-table v-bind:to-dos="filter(toDos, true)"></to-do-table>
+      <ToDoTable :to-dos="filter(toDos, true)"></ToDoTable>
     </el-tab-pane>
-  </el-tabs>
+   </el-tabs>
   </div>
 </template>
 <script>
 import axios from 'axios';
 import {reject, filter} from 'lodash';
-import ToDoTable from '../to_dos/to-do-table';
+import ToDoTable from '../to_dos/to-do-table'
 
 export default {
   data() {
@@ -38,8 +38,8 @@ export default {
       });
     },
   components: {
-      ToDoTable: ToDoTable
-    },
+    ToDoTable: ToDoTable
+  },
   updateToDo(id, finished) {
   axios.patch('/api/v1/to_dos/' + id, {to_do: {finished: finished}})
     .then(res => {
